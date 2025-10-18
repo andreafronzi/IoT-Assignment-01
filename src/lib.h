@@ -1,4 +1,5 @@
-
+#ifndef LIB_H
+#define LIB_H
 /*Led verdi spenti
   Led rosso lampeggiante
   LCD scritta "Welcome to TOS/n press b1 to start".
@@ -18,3 +19,9 @@ void correctSequence();
 void wrongSequence();
 
 void stop();
+
+
+/*se sono trascorsi 10 sec cambia lo stato del gioco*/
+bool offTimer();
+
+#endif

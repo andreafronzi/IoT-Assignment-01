@@ -1,24 +1,16 @@
+#include <TimerOne.h>
+#include <util/atomic.h
 #include "lib.h"
+
 
 #define POTENZIOMETER_PIN A0;
 
-enum GameState { 
-    INIT, 
-    WAIT_START,
-    DEEP_SLEEP,
-    SHOW_SEQUENCE,
-    WAIT_INPUT,
-    GOOD,
-    GAME_OVER
-};
+int round = 1;
+float T1;
+float F;
 
-GameState state = INIT;
-
-int level = 1;
-float T1 = 0;
-float F = 0;
-int8_t buttonSequence[4] = {0, 0, 0, 0};
-
+int8_t[4] buttonSequence = {0, 0, 0, 0};
+int8_t[4] led = {0, 0, 0, 0};
 
 void setup() {
     Serial.begin(9600);
@@ -26,9 +18,8 @@ void setup() {
     T1 = 24;
     //setting F exploited for game's difficulty
     int potenziometerValue = analogRead(POTENZIOMETER_PIN);
-    level = map(potenziometerValue, 0, 1023, 1, 4);
-    switch (level)
-    {
+    int difficultyOfLevel = map(potenziometerValue, 0, 1023, 1, 4);
+    switch (difficultyOfLevel) {
     case 1:
         F = 0.5;
         break;
@@ -44,11 +35,25 @@ void setup() {
     default:
         break;
     }
-
-  begin();
 }
 
 void loop() {
-    
+    switch(state) {
+        case INIT:
+            Timer1.initialize(10,000,000);
+            Timer1.attachInterrupt(offTimer);
+            if()
+            break;
+        case DEEP_SLEEP:
+
+    }
 
 }
+
+ INIT, 
+    WAIT_START,
+    DEEP_SLEEP,
+    SHOW_SEQUENCE,
+    WAIT_INPUT,
+    GOOD,
+    GAME_OVER
