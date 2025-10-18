@@ -2,6 +2,18 @@
 
 #define POTENZIOMETER_PIN A0;
 
+enum GameState { 
+    INIT, 
+    WAIT_START,
+    DEEP_SLEEP,
+    SHOW_SEQUENCE,
+    WAIT_INPUT,
+    GOOD,
+    GAME_OVER
+};
+
+GameState state = INIT;
+
 int level = 1;
 float T1 = 0;
 float F = 0;
@@ -10,7 +22,9 @@ int8_t buttonSequence[4] = {0, 0, 0, 0};
 
 void setup() {
     Serial.begin(9600);
+    //impostazione di T1 per il tempo iniziale
     T1 = 24;
+    //setting F exploited for game's difficulty
     int potenziometerValue = analogRead(POTENZIOMETER_PIN);
     level = map(potenziometerValue, 0, 1023, 1, 4);
     switch (level)
@@ -30,5 +44,11 @@ void setup() {
     default:
         break;
     }
+
   begin();
+}
+
+void loop() {
+    
+
 }
