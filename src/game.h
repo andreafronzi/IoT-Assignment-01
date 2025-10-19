@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <Arduino.h>
+#include <LiquidCrystal_I2C.h>
 
 typedef enum {
   STATE_INIT,
@@ -10,12 +11,29 @@ typedef enum {
   STATE_START,
   STATE_PLAY_ROUND,
   STATE_WAIT_INPUT,
-  STATE_GOOD,
+  STATE_PASSED_ROUND,
   STATE_GAME_OVER
 } GameState;
 
+extern int round;
+extern float T1;
+extern float F;
+extern GameState state;
+extern int score;
+
+/*inizializzo le variabili di gioco*/
 void gameInit();
+
 void gameLoop();
+
+void handlerInit();
+void handlerWaitStart();
+void handlerSleep();
+void handlerStart();
+void handlerPlayRound();
+void handlerWaitInput();
+void handlerPassedRound();
+void handlerGameOv();
 
 
 /*Led verdi spenti
