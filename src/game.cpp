@@ -41,11 +41,6 @@ void gameInit() {
             F = 1.0;
             break;
     }
-    ledsOff();
-    startFading();
-    showLCDInitialMessage();
-    /*Set initial timer to verify if the MCU should enter in sleep mode*/
-    initilTime = millis();
 }
 
 void gameLoop() {
@@ -70,11 +65,17 @@ void gameLoop() {
 }
 
 /*after the initialization, the system go in WAIT_START mode*/
-static void handlerInit() {state = STATE_WAIT_START;}
+static void handlerInit() {
+    showLCDInitialMessage();
+    delay(3000);
+    state = STATE_WAIT_START;
+    initilTime = millis();
+}
 
 /* If the B1 button is not pressed within 10 seconds, the system must go into deep sleeping. If the B1 button is pressed within, the game starts*/
 static void handlerWaitStart(); {
-if (readButton() == 1) {
+    startFading();
+    if (readButton() == 1) {
         state = STATE_START;
     } else if (millis() - initilTime >= 10000) {
         state = STATE_SLEEP;
@@ -83,12 +84,14 @@ if (readButton() == 1) {
 
 /*If the system is in sleep mode, it must wake up and go into START mode*/
 static void handlerSleep() {
-    if(readButton() == 1) {
+    int buttonPressed = readButton();
+    assert(buttonPressed != 0);
+    if(buttonPressed == 1) {
         state = STATE_START;
     }
 }
 
-/*All leds are turned off, LCD displays the message "Go!" and the score is set to 0*/
+/*All leds are turno off, LCD displays the message "Go!" and the score is set to 0*/
 static void handlerStart() {
     ledsOff();
     showLCDStartMessage();
@@ -128,7 +131,7 @@ void handlerWaitInput() {
 }
 
 /*increase the score and display it on the LCD. New roung begin and try time decreases */
-void handlerPassedRound() {
+static void handlerPassedRound() {
     score += 1;
     showLCDScoreMessage(score);
     delay(3000);
@@ -137,7 +140,7 @@ void handlerPassedRound() {
 }
 
 /*Turno on red led for 2 seconds and display the message "Game Over - Final Score XXX"*/
-void handlerGameOv() {
+static void handlerGameOv() {
     ledOn(LR);
     delay(2000);
     ledOff(LR);

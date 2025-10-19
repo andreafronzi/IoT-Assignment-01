@@ -41,6 +41,8 @@ void ledOff(int idx);
 
 void startFading();
 
+void stopFading();
+
 /*show initial message on LCD: "Welcome to TOS! Press B1 to start"*/
 void showLCDInitialMessage();
 

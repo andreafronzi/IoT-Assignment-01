@@ -38,6 +38,7 @@ void ledsOff() {
     digitalWrite(L2, LOW);
     digitalWrite(L3, LOW);
     digitalWrite(L4, LOW);
+    digitalWrite(LR, LOW);
 }
 
 void ledOn(int idx) {
@@ -64,6 +65,10 @@ void startFading() {
     if (currIntensity == 0 || currIntensity == 255) {
         fadeAmount = -fadeAmount ;
     }
+}
+
+void stopFading() {
+    fadeAmount = 0;
 }
 
 
