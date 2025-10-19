@@ -60,8 +60,7 @@ void gameLoop() {
         case STATE_PLAY_ROUND: handlerPlayRound(); break;
         case STATE_WAIT_INPUT: handlerWaitInput(); break;
         case STATE_PASSED_ROUND: handlerPassedRound(); break;
-        case STATE_GAME_OVER: handlerGameOv(); break;
-    }
+        case STATE_GAME_OVER: handlerGameOv(); break;}
 }
 
 /*after the initialization, the system go in WAIT_START mode*/
@@ -140,7 +139,7 @@ static void handlerPassedRound() {
 }
 
 /*Turno on red led for 2 seconds and display the message "Game Over - Final Score XXX"*/
-static void handlerGameOv() {
+                                static void handlerGameOv() {
     ledOn(LR);
     delay(2000);
     ledOff(LR);

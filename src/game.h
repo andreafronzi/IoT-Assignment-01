@@ -20,6 +20,7 @@ extern float T1;
 extern float F;
 extern GameState state;
 extern int score;
+int round;
 
 /*inizializzo le variabili di gioco*/
 void gameInit();

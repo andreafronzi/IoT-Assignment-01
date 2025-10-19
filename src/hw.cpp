@@ -50,7 +50,7 @@ void ledOn(int idx) {
     }
 }
 
-void ledOn(int idx) {
+void ledOFF(int idx) {
     switch (idx) {
         case 1: digitalWrite(L1, LOW); break;
         case 2: digitalWrite(L2, LOW); break;
@@ -60,15 +60,15 @@ void ledOn(int idx) {
 }
 
 void startFading() {
-    analogWrite(LED_PIN, currIntensity);
-    currIntensity = currIntensity + fadeAmount;
+    analogWrite(LR, currIntensity);
+    currIntensity = currIntensity + fadeValue;
     if (currIntensity == 0 || currIntensity == 255) {
-        fadeAmount = -fadeAmount ;
+        fadeValue = -fadeValue;
     }
 }
 
 void stopFading() {
-    fadeAmount = 0;
+    fadeValue= 0;
 }
 
 
