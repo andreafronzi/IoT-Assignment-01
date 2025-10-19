@@ -27,10 +27,16 @@ void initHardware();
 /*read Pot value*/
 int readPOT();
 
-/*read which button is pressed*/
+/*read which button is pressed. Return 0 if no button is pressed or 1,2,3,4 if button 1,2,3,4 is pressed respectively*/
 int readButton();
+
+/*put off all leds*/
 void ledsOff();
+
+/*turn on led idx*/
 void ledOn(int idx);
+
+/*turn off led idx*/
 void ledOff(int idx);
 
 void startFading();
@@ -38,6 +44,16 @@ void startFading();
 /*show initial message on LCD: "Welcome to TOS! Press B1 to start"*/
 void showLCDInitialMessage();
 
+/*show start message on LCD: "Go"*/
+void showLCDStartMessage();
 
+/*show sequence message on LCD: "XYWZ"*/
+void showLCDSequenceMessage(const char* seq);
+
+/*show passed round message on LCD: "Good! Score XXX"*/
+void showLCDScoreMessage(int score);
+
+/*display the message "Game Over - Final Score XXX" for 10 seconds*/
+void showLCDGameOverMessage(int score);
 
 #endif

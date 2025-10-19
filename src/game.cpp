@@ -1,10 +1,15 @@
+#include <assert.h>
 #include "game.h"
 #include "hw.h"
 #include <LiquidCrystal_I2C.h>
 
+/*sequence to be reproduced*/
 int currentSequence[4];
+/*user's try*/
+int trySequence[4];
 int seqIndex;
-int initilTime;
+float initilTime;
+float currentRoundTime;
 
 void gameInit() {
     /*inizializzo lo stato del gioco*/
@@ -47,8 +52,16 @@ void gameLoop() {
     switch (state) {
         case STATE_INIT: handlerInit(); break;
         case STATE_WAIT_START: handlerWaitStart(); break;
-        case STATE_SLEEP handlerSleep(); break;
-        case STATE_START; handlerStart(); break;
+        case STATE_SLEEP:
+            //entrare in deep_sleep
+            handlerSleep();
+            break;
+        case STATE_START;
+            if(/*sistema in deep sleep*/) {
+                /*lo si sveglia*/
+            }
+            handlerStart();
+            break;
         case STATE_PLAY_ROUND: handlerPlayRound(); break;
         case STATE_WAIT_INPUT: handlerWaitInput(); break;
         case STATE_PASSED_ROUND: handlerPassedRound(); break;
@@ -69,11 +82,99 @@ if (readButton() == 1) {
 }
 
 /*If the system is in sleep mode, it must wake up and go into START mode*/
-void handlerSleep() {
-    
+static void handlerSleep() {
+    if(readButton() == 1) {
+        state = STATE_START;
+    }
 }
-void handlerStart();
-void handlerPlayRound();
-void handlerWaitInput();
-void handlerPassedRound();
-void handlerGameOv();
+
+/*All leds are turned off, LCD displays the message "Go!" and the score is set to 0*/
+static void handlerStart() {
+    ledsOff();
+    showLCDStartMessage();
+    score = 0;
+    state = STATE_PLAY_ROUND;
+}
+
+/**/
+void handlerPlayRound() {
+    seqIndex = 0;
+    ledsOff();
+    round += 1;
+    initSequence();
+    showLCDSequenceMessage(/*trasforma la sequenza in stringa*/);
+    currentRoundTime = millis();
+}
+
+void handlerWaitInput() {
+    if(millis() - currentRoundTime >= T1) {
+        state = STATE_GAME_OVER;
+    } else {
+        int buttonPressed = readButton();
+        assert(buttonPressed != 0);
+        int corrispondentLed = getCorrispondentLed(buttonPressed);
+        ledOn(corrispondentLed);
+        delay(30)
+        ledOff(corrispondentLed);
+        trySequence[seqIndex] = buttonPressed;
+        seqIndex += 1;
+        if(seqIndex == 4) {
+            if(SequenceAreEqual())  {
+                state = STATE_PASSED_ROUND;
+            } else {
+                state = STATE_GAME_OVER;
+        }
+    }
+}
+
+/*increase the score and display it on the LCD. New roung begin and try time decreases */
+void handlerPassedRound() {
+    score += 1;
+    showLCDScoreMessage(score);
+    delay(3000);
+    T1 = T1 - F;
+    state = STATE_PLAY_ROUND;
+}
+
+/*Turno on red led for 2 seconds and display the message "Game Over - Final Score XXX"*/
+void handlerGameOv() {
+    ledOn(LR);
+    delay(2000);
+    ledOff(LR);
+    showLCDGameOverMessage(score);
+    state = STATE_WAIT_START;
+}
+
+
+static void initSequence() {
+    int i = 0;
+    while(i < 4) {
+        int random = random(1, 5);
+        int j;
+        for(j = 0; j <= i; j++) {
+            if(currentSequence[j] == random) {
+                break;
+            } else {
+                currentSequence[i] = random;
+            }
+    }
+}
+
+static int getCorrispondentLed(int buttonPressed) {
+    switch(buttonPressed) {
+        case 1: return L1;
+        case 2: return L2;
+        case 3: return L3;
+        case 4: return L4;
+    }
+}
+
+static boll SequenceAreEqual() {
+    int i;
+    for(i = 0; i < 4; i++) {
+        if(currentSequence[i] != trySequence[i]) {
+            return false;
+        }
+    }
+    return true;
+}
