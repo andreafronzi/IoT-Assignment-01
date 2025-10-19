@@ -40,11 +40,13 @@ void setup() {
 void loop() {
     switch(state) {
         case INIT:
+            long current = millis();
             Timer1.initialize(10,000,000);
             Timer1.attachInterrupt(offTimer);
             if()
             break;
         case DEEP_SLEEP:
+            Timer1.detachInterrupt();
 
     }
 

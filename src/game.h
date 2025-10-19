@@ -1,5 +1,23 @@
-#ifndef LIB_H
-#define LIB_H
+#ifndef GAME_H
+#define GAME_H
+
+#include <Arduino.h>
+
+typedef enum {
+  STATE_INIT,
+  STATE_WAIT_START,
+  STATE_SLEEP,
+  STATE_START,
+  STATE_PLAY_ROUND,
+  STATE_WAIT_INPUT,
+  STATE_GOOD,
+  STATE_GAME_OVER
+} GameState;
+
+void gameInit();
+void gameLoop();
+
+
 /*Led verdi spenti
   Led rosso lampeggiante
   LCD scritta "Welcome to TOS/n press b1 to start".

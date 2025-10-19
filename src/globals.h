@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-enum GameState { 
+extern enum GameState { 
     INIT, 
     WAIT_START,
     DEEP_SLEEP,
