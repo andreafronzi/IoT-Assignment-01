@@ -22,6 +22,15 @@ extern GameState state;
 extern int score;
 int round;
 
+/*Notify the system to change state to START*/
+void changeStateToStart();
+
+/*update current sequence*/
+void pushFirstButtonToSequence();
+void pushSecondButtonToSequence();
+void pushThirdButtonToSequence();
+void pushFourthButtonToSequence();
+
 /*inizializzo le variabili di gioco*/
 void gameInit();
 

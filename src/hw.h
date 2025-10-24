@@ -2,15 +2,16 @@
 #define HW_H
 
 #include <Arduino.h>
+#include "game.h"
 
 //definizione dei pin corrispondenti ai bottoni
-#define B1 8
+#define B1 2
 #define B2 9
 #define B3 10
 #define B4 11
 
 //definizione dei pin corrispondente ai led VERDI
-#define L1 2
+#define L1 8
 #define L2 3
 #define L3 4
 #define L4 5
@@ -29,6 +30,15 @@ int readPOT();
 
 /*read which button is pressed. Return 0 if no button is pressed or 1,2,3,4 if button 1,2,3,4 is pressed respectively*/
 int readButton();
+
+/*enable interrupts for buttons b1 to start game*/
+void enableStartButtonInterrupt();
+
+/*disabled actual interrupt of B1 and enable sleepInterrupt */
+void enableSleepInterrupt();
+
+/*disable all interrupts for sequence*/
+void disableInterruptsForSequence();
 
 /*put off all leds*/
 void ledsOff();
