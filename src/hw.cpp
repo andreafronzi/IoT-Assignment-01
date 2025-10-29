@@ -54,7 +54,6 @@ static void wakeUp() {
 }
 
 void attachAllInterruptsForSequence() {
-    /*enable all Interrupts for buttons*/
     enableInterrupt(B1,notifyPressedButton1ForSequence,RISING);
 	enableInterrupt(B2,notifyPressedButton2ForSequence,RISING);
 	enableInterrupt(B3,notifyPressedButton3ForSequence,RISING);
@@ -62,7 +61,6 @@ void attachAllInterruptsForSequence() {
 }
 
 void disableInterruptsForSequence() {
-    /*disable all Interrupts for buttons*/
     disableInterrupt(B1);
     disableInterrupt(B2);
     disableInterrupt(B3);
@@ -101,23 +99,11 @@ void ledsOff() {
 }
 
 void ledOn(int idx) {
-    switch (idx) {
-        case 1: digitalWrite(L1, HIGH); break;
-        case 2: digitalWrite(L2, HIGH); break;
-        case 3: digitalWrite(L3, HIGH); break;
-        case 4: digitalWrite(L4, HIGH); break;
-        case 6: digitalWrite(LR, HIGH); break;
-    }
+    digitalWrite(idx, HIGH);
 }
 
 void ledOff(int idx) {
-    switch (idx) {
-        case 1: digitalWrite(L1, LOW); break;
-        case 2: digitalWrite(L2, LOW); break;
-        case 3: digitalWrite(L3, LOW); break;
-        case 4: digitalWrite(L4, LOW); break;
-        case 6: digitalWrite(LR, LOW); break;
-    }
+    digitalWrite(idx, LOW);
 }
 
 void startFading() {

@@ -1,8 +1,6 @@
 #include "game.h"
 #include "hw.h"
 
-#define CURRISPONDENT_LED(button) ((button) == 1 ? L1 : (button) == 2 ? L2 : (button) == 3 ? L3 :  (button) == 4 ? L4 : LR)
-
 /*sequence to be reproduced*/
 int currentSequence[4];
 /*user's try*/
@@ -12,7 +10,6 @@ unsigned long initialTime;
 unsigned long currentRoundTime;
 
 void gameInit() {
-
 	/*set initial index of the sequence*/
 	seqIndex = 0;
     /*inizializzo lo stato del gioco*/
