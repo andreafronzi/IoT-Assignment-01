@@ -56,8 +56,10 @@ void ledOn(int idx);
 /*turn off led idx*/
 void ledOff(int idx);
 
+/*avoid LR to start the fading*/
 void startFading();
 
+/*stop the fading of LR*/
 void stopFading();
 
 /*show initial message on LCD: "Welcome to TOS! Press B1 to start"*/

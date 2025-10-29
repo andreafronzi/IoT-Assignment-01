@@ -24,25 +24,17 @@ void initHardware() {
     pinMode(LR, OUTPUT);
 }
 
+/*POTENZIOMETER SECTION*/
 int readPOT() {
     return analogRead(POT_PIN);
 }
 
-int readButton() {
-    if(digitalRead(B1) == HIGH) return 1;
-    if(digitalRead(B2) == HIGH) return 2;
-    if(digitalRead(B3) == HIGH) return 3;
-    if(digitalRead(B4) == HIGH) return 4;
-    return 0;
-}
-
-/*enable interrupts for buttons b1 to start game*/
+/*BUTTONS SECTION*/
 void enableStartButtonInterrupt() {
     disableInterrupt(B1);
 	enableInterrupt(B1, notifyStartButtonPressed, RISING);
 }
 
-/*enable interrupt for weaking up sistem from sleep_mode */
 void enableSleepInterrupt() {
     disableInterrupt(B1);
 	enableInterrupt(B1,wakeUp,RISING);
@@ -67,7 +59,7 @@ void disableInterruptsForSequence() {
     disableInterrupt(B4);
 }
 
-/*Notify wich button was pressed during the round */
+/*Notify wich button was pressed during the round in order to be inserted into the sequence*/
 void notifyPressedButton1ForSequence() {
 	pushFirstButtonToSequence();
 }
@@ -89,7 +81,7 @@ void notifyStartButtonPressed() {
     changeStateToStart();
 }
 
-
+/*LEDS SECTION*/
 void ledsOff() {
     digitalWrite(L1, LOW);
     digitalWrite(L2, LOW);
@@ -118,4 +110,14 @@ void stopFading() {
     fadeValue= 0;
 }
 
+/*LCD SECTION*/
+void showLCDInitialMessage() {}
+
+void showLCDStartMessage(){}
+
+void showLCDSequenceMessage(const char* seq){}
+
+void showLCDScoreMessage(int score){}
+
+void showLCDGameOverMessage(int score){}
 
