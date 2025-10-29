@@ -74,7 +74,7 @@ void notifyPressedButton1ForSequence() {
 	pushFirstButtonToSequence();
 }
 
-void notifyPressedButton2ForSequnce() {
+void notifyPressedButton2ForSequence() {
 	pushSecondButtonToSequence();
 }
 
@@ -106,6 +106,7 @@ void ledOn(int idx) {
         case 2: digitalWrite(L2, HIGH); break;
         case 3: digitalWrite(L3, HIGH); break;
         case 4: digitalWrite(L4, HIGH); break;
+        case 6: digitalWrite(LR, HIGH); break;
     }
 }
 
@@ -115,6 +116,7 @@ void ledOff(int idx) {
         case 2: digitalWrite(L2, LOW); break;
         case 3: digitalWrite(L3, LOW); break;
         case 4: digitalWrite(L4, LOW); break;
+        case 6: digitalWrite(LR, LOW); break;
     }
 }
 

@@ -15,12 +15,11 @@ typedef enum {
   STATE_GAME_OVER
 } GameState;
 
-extern int round;
 extern float T1;
 extern float F;
 extern GameState state;
 extern int score;
-int round;
+extern int round;
 
 /*Notify the system to change state to START*/
 void changeStateToStart();

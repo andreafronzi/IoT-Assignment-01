@@ -3,6 +3,9 @@
 
 #include <Arduino.h>
 #include "game.h"
+#include <EnableInterrupt.h>
+#include <LiquidCrystal_I2C.h>
+#include <avr/sleep.h>
 
 //definizione dei pin corrispondenti ai bottoni
 #define B1 2
@@ -18,6 +21,8 @@
 
 //definizione del pin corrispondente al pin rosso
 #define LR 6
+
+#define CURRISPONDENT_LED(button) ((button) == 1 ? L1 : (button) == 2 ? L2 : (button) == 3 ? L3 :  (button) == 4 ? L4 : LR)
 
 /*definizione del pin corrispondente al potenziometro*/
 #define POT_PIN A0
@@ -36,6 +41,8 @@ void enableStartButtonInterrupt();
 
 /*disabled actual interrupt of B1 and enable sleepInterrupt */
 void enableSleepInterrupt();
+
+void attachAllInterruptsForSequence();
 
 /*disable all interrupts for sequence*/
 void disableInterruptsForSequence();

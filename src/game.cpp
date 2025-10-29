@@ -1,18 +1,15 @@
 #include "game.h"
-#include "hw.h
-#include <EnableInterrupt.h>
-#include <LiquidCrystal_I2C.h>
+#include "hw.h"
 
-#define CURRISPONDENT_LED(button) ((button) == 1 ? L1 : (button) == 2 ? L2 : (button) == 3 ? L3 : L4)
+#define CURRISPONDENT_LED(button) ((button) == 1 ? L1 : (button) == 2 ? L2 : (button) == 3 ? L3 :  (button) == 4 ? L4 : LR)
 
 /*sequence to be reproduced*/
 int currentSequence[4];
 /*user's try*/
 uint8_t trySequence[4];
 uint8_t seqIndex;
-int seqIndex;
-float initilTime;
-float currentRoundTime;
+unsigned long initialTime;
+unsigned long currentRoundTime;
 
 void gameInit() {
 
@@ -74,7 +71,7 @@ static void handlerInit() {
     showLCDInitialMessage();
     delay(3000);
     state = STATE_WAIT_START;
-    initilTime = millis();
+    initialTime = millis();
 }
 
 /* If the B1 button is not pressed within 10 seconds, the system must go into deep sleeping. If the B1 button is pressed within 10s, the game starts*/
@@ -166,15 +163,6 @@ static void initSequence() {
   }
 }
 
-static int getCorrispondentLed(int buttonPressed) {
-    switch(buttonPressed) {
-        case 1: return L1;
-        case 2: return L2;
-        case 3: return L3;
-        case 4: return L4;
-    }
-}
-
 static bool SequenceAreEqual() {
     uint8_t i;
     for(i = 0; i < 4; i++) {
@@ -236,6 +224,10 @@ void changeStateToStart() {
     if(state == STATE_WAIT_START || state == STATE_SLEEP) {
         state = STATE_START;
     }
+}
+
+static void enableInterruptsForSequence() {
+    attachAllInterruptsForSequence();
 }
 
 /*Reset the score*/
