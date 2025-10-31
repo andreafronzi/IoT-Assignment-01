@@ -1,6 +1,11 @@
 #include <Arduino.h>
-#include <urs/sleep.h>
+//#include <urs/sleep.h>
+#include <EnableInterrupt.h>
 #include "hw.h"
+#include <LiquidCrystal_I2C.h>
+
+// define lcd instance (declared extern in hw.h)
+LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
 
 static unsigned int fadeValue = 5;
 static unsigned int currIntensity = 0;
@@ -34,14 +39,13 @@ int readPOT() {
 }
 
 /*BUTTONS SECTION*/
+void notifyStartButtonPressed() {
+    changeStateToStart();
+}
+
 void enableStartButtonInterrupt() {
     disableInterrupt(B1);
 	enableInterrupt(B1, notifyStartButtonPressed, RISING);
-}
-
-void enableSleepInterrupt() {
-    disableInterrupt(B1);
-	enableInterrupt(B1,wakeUp,RISING);
 }
 
 /*Wake up the system from sleep mode*/
@@ -49,18 +53,9 @@ static void wakeUp() {
     changeStateToStart();
 }
 
-void attachAllInterruptsForSequence() {
-    enableInterrupt(B1,notifyPressedButton1ForSequence,RISING);
-	enableInterrupt(B2,notifyPressedButton2ForSequence,RISING);
-	enableInterrupt(B3,notifyPressedButton3ForSequence,RISING);
-	enableInterrupt(B4,notifyPressedButton4ForSequence,RISING);
-}
-
-void disableInterruptsForSequence() {
+void enableSleepInterrupt() {
     disableInterrupt(B1);
-    disableInterrupt(B2);
-    disableInterrupt(B3);
-    disableInterrupt(B4);
+	enableInterrupt(B1,wakeUp,RISING);
 }
 
 /*Notify wich button was pressed during the round in order to be inserted into the sequence*/
@@ -80,8 +75,18 @@ void notifyPressedButton4ForSequence() {
 	pushFourthButtonToSequence();
 }
 
-void notifyStartButtonPressed() {
-    changeStateToStart();
+void attachAllInterruptsForSequence() {
+    enableInterrupt(B1,notifyPressedButton1ForSequence,RISING);
+	enableInterrupt(B2,notifyPressedButton2ForSequence,RISING);
+	enableInterrupt(B3,notifyPressedButton3ForSequence,RISING);
+	enableInterrupt(B4,notifyPressedButton4ForSequence,RISING);
+}
+
+void disableInterruptsForSequence() {
+    disableInterrupt(B1);
+    disableInterrupt(B2);
+    disableInterrupt(B3);
+    disableInterrupt(B4);
 }
 
 /*LEDS SECTION*/
@@ -94,11 +99,11 @@ void ledsOff() {
 }
 
 void ledOn(int idx) {
-    digitalWrite(idx, HIGH);
+    digitalWrite(CURRISPONDENT_LED(idx), HIGH);
 }
 
 void ledOff(int idx) {
-    digitalWrite(idx, LOW);
+    digitalWrite(CURRISPONDENT_LED(idx), LOW);
 }
 
 void startFading() {
@@ -125,12 +130,16 @@ void showLCDStartMessage(){
 }
 
 static void transferSequenceToString(uint8_t* currentSequence) {
+    // Build a simple string representation like "1234" and display on LCD
     String seqStr = "";
-    for(int i = 0; i < 4; i++) {
-        seqStr.add(currentSequence[i].toString());
+    for (int i = 0; i < 4; ++i) {
+        seqStr += String(currentSequence[i]);
     }
-    seqStr[4] = '\0';
+    // show on lcd (caller may also use it differently)
+    lcd.setCursor(0,0);
+    lcd.print(seqStr);
 }
+
 void showLCDSequenceMessage(const char* seq){
     lcd.setCursor(0,0);
     lcd.print(seq);

@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <Arduino.h>
+//#include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 
 typedef enum {
@@ -19,7 +19,7 @@ extern float T1;
 extern float F;
 extern GameState state;
 extern int score;
-extern int round;
+extern int roundNum;
 
 /*Notify the system to change state to START*/
 void changeStateToStart();

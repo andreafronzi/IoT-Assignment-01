@@ -4,7 +4,7 @@
 #include "hw.h"
 
 void setup() {
-    InitHardware();
+    initHardware();
     gameInit();
 }
 

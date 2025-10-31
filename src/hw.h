@@ -1,9 +1,7 @@
 #ifndef HW_H
 #define HW_H
 
-#include <Arduino.h>
 #include "game.h"
-#include <EnableInterrupt.h>
 #include <LiquidCrystal_I2C.h>
 #include <avr/sleep.h>
 
@@ -27,8 +25,9 @@
 /*definizione del pin corrispondente al potenziometro*/
 #define POT_PIN A0
 
-/*lcd monitor definition*/
-LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
+/*lcd monitor definition (defined in hw.cpp)
+	define as extern here to avoid multiple definitions */
+extern LiquidCrystal_I2C lcd;
 
 /*initialization of harware component*/
 void initHardware();
