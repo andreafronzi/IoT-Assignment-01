@@ -22,6 +22,10 @@ void initHardware() {
 
     //inizializzazione led rosso
     pinMode(LR, OUTPUT);
+
+    //inzializing lcd
+    lcd.init();
+    lcd.backlight();
 }
 
 /*POTENZIOMETER SECTION*/
@@ -76,7 +80,6 @@ void notifyPressedButton4ForSequence() {
 	pushFourthButtonToSequence();
 }
 
-/*Notify if b1 is pressed for starting the game*/
 void notifyStartButtonPressed() {
     changeStateToStart();
 }
@@ -111,13 +114,38 @@ void stopFading() {
 }
 
 /*LCD SECTION*/
-void showLCDInitialMessage() {}
+void showLCDInitialMessage() {
+    lcd.setCursor(0,0);
+    lcd.print("Welcome to TOS! Press B1 to start");
+}
 
-void showLCDStartMessage(){}
+void showLCDStartMessage(){
+    lcd.setCursor(0,0);
+    lcd.print("Go");
+}
 
-void showLCDSequenceMessage(const char* seq){}
+static void transferSequenceToString(uint8_t* currentSequence) {
+    String seqStr = "";
+    for(int i = 0; i < 4; i++) {
+        seqStr.add(currentSequence[i].toString());
+    }
+    seqStr[4] = '\0';
+}
+void showLCDSequenceMessage(const char* seq){
+    lcd.setCursor(0,0);
+    lcd.print(seq);
+}
 
-void showLCDScoreMessage(int score){}
 
-void showLCDGameOverMessage(int score){}
+void showLCDScoreMessage(int score){
+    lcd.setCursor(0,0);
+    lcd.print("Good! Score ");
+    lcd.print(score);
+}
+
+void showLCDGameOverMessage(int score){
+    lcd.setCursor(0,0);
+    lcd.print("Game Over - Final Score ");
+    lcd.print(score);
+}
 

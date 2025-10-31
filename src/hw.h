@@ -27,6 +27,9 @@
 /*definizione del pin corrispondente al potenziometro*/
 #define POT_PIN A0
 
+/*lcd monitor definition*/
+LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
+
 /*initialization of harware component*/
 void initHardware();
 
