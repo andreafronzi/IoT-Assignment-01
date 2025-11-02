@@ -121,7 +121,9 @@ void stopFading() {
 /*LCD SECTION*/
 void showLCDInitialMessage() {
     lcd.setCursor(0,0);
-    lcd.print("Welcome to TOS! Press B1 to start");
+    lcd.print("Welcome to TOS!");
+    lcd.setCursor(0, 1);
+    lcd.print("Press B1 to start");
 }
 
 void showLCDStartMessage(){
@@ -141,13 +143,15 @@ void showLCDSequenceMessage(uint8_t* seq){
 
 void showLCDScoreMessage(int score){
     lcd.setCursor(0,0);
-    lcd.print("Good! Score ");
+    lcd.print("GOOD! Score ");
     lcd.print(score);
 }
 
 void showLCDGameOverMessage(int score){
     lcd.setCursor(0,0);
-    lcd.print("Game Over - Final Score ");
+    lcd.print("Game Over");
+    lcd.setCursor(0,1);
+    lcd.print("Final Score:");
     lcd.print(score);
 }
 
