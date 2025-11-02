@@ -71,7 +71,7 @@ void showLCDInitialMessage();
 void showLCDStartMessage();
 
 /*show sequence message on LCD: "XYWZ"*/
-void showLCDSequenceMessage(const char* seq);
+void showLCDSequenceMessage(uint8_t* seq);
 
 /*show passed round message on LCD: "Good! Score XXX"*/
 void showLCDScoreMessage(int score);

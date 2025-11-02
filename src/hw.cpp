@@ -125,24 +125,17 @@ void showLCDInitialMessage() {
 }
 
 void showLCDStartMessage(){
+    lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Go");
 }
 
-static void transferSequenceToString(uint8_t* currentSequence) {
-    // Build a simple string representation like "1234" and display on LCD
-    String seqStr = "";
-    for (int i = 0; i < 4; ++i) {
-        seqStr += String(currentSequence[i]);
+void showLCDSequenceMessage(uint8_t* seq){
+    lcd.clear();
+    lcd.setCursor(0,0);
+    for (int i = 0; i < 4; i++) {
+        lcd.print(seq[i]);
     }
-    // show on lcd (caller may also use it differently)
-    lcd.setCursor(0,0);
-    lcd.print(seqStr);
-}
-
-void showLCDSequenceMessage(const char* seq){
-    lcd.setCursor(0,0);
-    lcd.print(seq);
 }
 
 

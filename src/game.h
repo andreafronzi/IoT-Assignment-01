@@ -15,8 +15,8 @@ typedef enum {
   STATE_GAME_OVER
 } GameState;
 
-extern float T1;
-extern float F;
+extern unsigned long int T1;
+extern unsigned long int F;
 extern GameState state;
 extern int score;
 extern int roundNum;

@@ -3,8 +3,8 @@
 #include <Arduino.h>
 
 // Definitions for globals declared as extern in game.h
-float T1 = 1000;
-float F = 1.0;
+unsigned long T1 = 10000;
+unsigned long F = 1.0;
 GameState state = STATE_INIT;
 int score = 0;
 int roundNum = 0;
@@ -79,7 +79,7 @@ void pushFirstButtonToSequence() {
         uint8_t buttonPressed = 1;
 		trySequence[seqIndex] = buttonPressed;
         ledOn(buttonPressed);
-        delay(30);
+        delay(300);
         ledOff(buttonPressed);
 		seqIndex++;
 	}
@@ -89,9 +89,9 @@ void pushSecondButtonToSequence() {
 	if(state == STATE_WAIT_INPUT && seqIndex < 4) {
         uint8_t buttonPressed = 2;
 		trySequence[seqIndex] = buttonPressed;
-        ledOn(CURRISPONDENT_LED(buttonPressed));
+        ledOn(buttonPressed);
         delay(30);
-        ledOff(CURRISPONDENT_LED(buttonPressed));
+        ledOff(buttonPressed);
 		seqIndex++;
 	}
 }
@@ -100,9 +100,9 @@ void pushThirdButtonToSequence() {
 	if(state == STATE_WAIT_INPUT && seqIndex < 4) {
         uint8_t buttonPressed = 3;
 		trySequence[seqIndex] = buttonPressed;
-        ledOn(CURRISPONDENT_LED(buttonPressed));
+        ledOn(buttonPressed);
         delay(30);
-        ledOff(CURRISPONDENT_LED(buttonPressed));
+        ledOff(buttonPressed);
 		seqIndex++;
 	}
 }
@@ -110,9 +110,9 @@ void pushFourthButtonToSequence() {
     if(state == STATE_WAIT_INPUT && seqIndex < 4) {
         uint8_t buttonPressed = 4;
         trySequence[seqIndex] = buttonPressed;
-        ledOn(CURRISPONDENT_LED(buttonPressed));
+        ledOn(buttonPressed);
         delay(30);
-        ledOff(CURRISPONDENT_LED(buttonPressed));
+        ledOff(buttonPressed);
         seqIndex++;
     }
 }
@@ -125,6 +125,8 @@ void changeStateToStart() {
 
 /*after the initialization, the system go in WAIT_START mode*/
 static void handlerInit() {
+    /*inizializzo il valore del tempo iniziale*/
+    T1 = 100000;
     showLCDInitialMessage();
     delay(3000);
     state = STATE_WAIT_START;
@@ -150,6 +152,7 @@ static void handlerSleep() {
 static void handlerStart() {
     ledsOff();
     showLCDStartMessage();
+    delay(1000);
     resetScore();
     state = STATE_PLAY_ROUND;
 }
@@ -207,7 +210,7 @@ void gameInit() {
     /*inizializzo lo stato del gioco*/
     state = STATE_INIT;
     /*inizializzo il valore del tempo iniziale*/
-    T1 = 1000;
+    T1 = 100000;
     /*inizializzo il valore del round*/
     roundNum = 0;
     /*inizializzo il punteggio*/
@@ -218,19 +221,19 @@ void gameInit() {
     int level = map(difficulty, 0, 1023, 1, 4);
     switch (level) {
         case 1:
-            F = 0.5;
+            F = 10;
             break;
         case 2:
-            F = 1.0;
+            F = 20;
             break;
         case 3:
-            F = 1.5;
+            F = 30;
             break;
         case 4:
-            F = 2.0;
+            F = 40;
             break;
         default:
-            F = 1.0;
+            F = 0;
             break;
     }
 }
