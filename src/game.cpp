@@ -42,28 +42,27 @@ static void updateRound() {
 }
 
 /*set difficulty*/
+//da capire perche il potenziometro legge solamente due valori
 static void setDifficulty() {
     int difficulty = readPOT();
-    int level = map(difficulty, 0, 1023, 1, 4);
+    int level = map(difficulty, 0, 1023, 0, 4);
     switch (level) {
-        case 1:
+        case 0:
             F = 100;
             break;
-        case 2:
+        case 1:
             F = 200;
             break;
-        case 3:
+        case 2:
             F = 300;
             break;
-        case 4:
-            F = 10000;
+        case 3:
+            F = 500;
             break;
         default:
             F = 0;
             break;
     }
-    Serial.begin(9600);
-    Serial.println(F);
 }
 
 static bool SequenceAreEqual() {
