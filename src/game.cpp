@@ -126,9 +126,8 @@ void changeStateToStart() {
 /*after the initialization, the system go in WAIT_START mode*/
 static void handlerInit() {
     /*inizializzo il valore del tempo iniziale*/
-    T1 = 100000;
+    T1 = 10000;
     showLCDInitialMessage();
-    delay(3000);
     state = STATE_WAIT_START;
     initialTime = millis();
 }
@@ -137,6 +136,7 @@ static void handlerInit() {
 static void handlerWaitStart() {
     startFading();
     putButton1InInitialMode();
+    //da cambiare e aggiunger l'interrupt su timer1
 	if(millis() - initialTime >= 10000) {
 		state = STATE_SLEEP;
 		return;
@@ -200,7 +200,8 @@ static void handlerGameOv() {
     delay(2000);
     ledOff(LR);
     showLCDGameOverMessage(score);
-    state = STATE_WAIT_START;
+    delay(10000);
+    state = STATE_INIT;
 }
 
 
@@ -210,7 +211,7 @@ void gameInit() {
     /*inizializzo lo stato del gioco*/
     state = STATE_INIT;
     /*inizializzo il valore del tempo iniziale*/
-    T1 = 100000;
+    T1 = 10000;
     /*inizializzo il valore del round*/
     roundNum = 0;
     /*inizializzo il punteggio*/
@@ -221,16 +222,16 @@ void gameInit() {
     int level = map(difficulty, 0, 1023, 1, 4);
     switch (level) {
         case 1:
-            F = 10;
+            F = 100;
             break;
         case 2:
-            F = 20;
+            F = 200;
             break;
         case 3:
-            F = 30;
+            F = 300;
             break;
         case 4:
-            F = 40;
+            F = 1000;
             break;
         default:
             F = 0;
