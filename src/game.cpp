@@ -2,12 +2,15 @@
 #include "hw.h"
 #include <Arduino.h>
 
+#define INITIAL_TIME 10000
+
 // Definitions for globals declared as extern in game.h
-unsigned long T1 = 10000;
-unsigned long F = 1.0;
 GameState state = STATE_INIT;
-int score = 0;
-int roundNum = 0;
+unsigned long int T1;
+unsigned long int F;
+int score;
+int roundNum;
+
 
 /*sequence to be reproduced*/
 uint8_t currentSequence[4];
@@ -36,6 +39,31 @@ static void resetSequenceIndex() {
 /*Update round's number*/
 static void updateRound() {
     roundNum += 1;
+}
+
+/*set difficulty*/
+static void setDifficulty() {
+    int difficulty = readPOT();
+    int level = map(difficulty, 0, 1023, 1, 4);
+    switch (level) {
+        case 1:
+            F = 100;
+            break;
+        case 2:
+            F = 200;
+            break;
+        case 3:
+            F = 300;
+            break;
+        case 4:
+            F = 10000;
+            break;
+        default:
+            F = 0;
+            break;
+    }
+    Serial.begin(9600);
+    Serial.println(F);
 }
 
 static bool SequenceAreEqual() {
@@ -126,7 +154,8 @@ void changeStateToStart() {
 /*after the initialization, the system go in WAIT_START mode*/
 static void handlerInit() {
     /*inizializzo il valore del tempo iniziale*/
-    T1 = 10000;
+    T1 = INITIAL_TIME;
+    setDifficulty();
     showLCDInitialMessage();
     state = STATE_WAIT_START;
     initialTime = millis();
@@ -210,33 +239,10 @@ void gameInit() {
 	seqIndex = 0;
     /*inizializzo lo stato del gioco*/
     state = STATE_INIT;
-    /*inizializzo il valore del tempo iniziale*/
-    T1 = 10000;
     /*inizializzo il valore del round*/
     roundNum = 0;
     /*inizializzo il punteggio*/
     score = 0;
-    /*set difficulty*/
-    int difficulty = readPOT();
-    //mappo il valore letto in 4 livelli di difficoltà
-    int level = map(difficulty, 0, 1023, 1, 4);
-    switch (level) {
-        case 1:
-            F = 100;
-            break;
-        case 2:
-            F = 200;
-            break;
-        case 3:
-            F = 300;
-            break;
-        case 4:
-            F = 1000;
-            break;
-        default:
-            F = 0;
-            break;
-    }
 }
 
 void gameLoop() {
