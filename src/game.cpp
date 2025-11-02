@@ -41,6 +41,22 @@ static void updateRound() {
     roundNum += 1;
 }
 
+static void decreaseTime() {
+    T1 = T1 - F;
+}
+
+void changeStateToStart() {
+    if(state == STATE_WAIT_START || state == STATE_SLEEP) {
+        state = STATE_START;
+    }
+}
+
+void changeStateToSleepMode(){
+    if(state == STATE_WAIT_START) {
+        state = STATE_SLEEP;
+    }
+}
+
 /*set difficulty*/
 //da capire perche il potenziometro legge solamente due valori
 static void setDifficulty() {
@@ -144,12 +160,6 @@ void pushFourthButtonToSequence() {
     }
 }
 
-void changeStateToStart() {
-    if(state == STATE_WAIT_START || state == STATE_SLEEP) {
-        state = STATE_START;
-    }
-}
-
 /*after the initialization, the system go in WAIT_START mode*/
 static void handlerInit() {
     /*inizializzo il valore del tempo iniziale*/
@@ -164,16 +174,13 @@ static void handlerInit() {
 static void handlerWaitStart() {
     startFading();
     putButton1InInitialMode();
-    //da cambiare e aggiunger l'interrupt su timer1
-	if(millis() - initialTime >= 10000) {
-		state = STATE_SLEEP;
-		return;
-	}
+    //da chiedere
+    //verifyTimeToSleep();
 }
 
 /*If the system is in sleep mode, it must wake up and go into START mode*/
 static void handlerSleep() {
-    enableSleepInterrupt();
+    sleepUntilB1();
 }
 
 /*All leds are turno off, LCD displays the message "Go!" and the score is set to 0*/
@@ -217,7 +224,7 @@ static void handlerPassedRound() {
     increaseScore();
     showLCDScoreMessage(score);
     delay(3000);
-    T1 = T1 - F;
+    decreaseTime();
     state = STATE_PLAY_ROUND;
 }
 

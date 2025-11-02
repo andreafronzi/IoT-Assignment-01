@@ -24,6 +24,9 @@ extern int roundNum;
 /*Notify the system to change state to START*/
 void changeStateToStart();
 
+/*Notify the system to change state to SLEEP*/
+void changeStateToSleepMode();
+
 /*update current sequence*/
 void pushFirstButtonToSequence();
 void pushSecondButtonToSequence();

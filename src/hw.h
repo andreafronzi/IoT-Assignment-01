@@ -4,6 +4,7 @@
 #include "game.h"
 #include <LiquidCrystal_I2C.h>
 #include <avr/sleep.h>
+// TimerOne not required here; avoid including it in header to prevent side-effects
 
 //definizione dei pin corrispondenti ai bottoni
 #define B1 2
@@ -20,10 +21,10 @@
 //definizione del pin corrispondente al pin rosso
 #define LR 6
 
-#define CURRISPONDENT_LED(button) ((button) == 1 ? L1 : (button) == 2 ? L2 : (button) == 3 ? L3 :  (button) == 4 ? L4 : LR)
-
 /*definizione del pin corrispondente al potenziometro*/
 #define POT_PIN A0
+
+#define CURRISPONDENT_LED(button) ((button) == 1 ? L1 : (button) == 2 ? L2 : (button) == 3 ? L3 :  (button) == 4 ? L4 : LR)
 
 /*lcd monitor definition (defined in hw.cpp)
 	define as extern here to avoid multiple definitions */
@@ -41,8 +42,11 @@ int readButton();
 /*enable interrupts for buttons b1 to start game*/
 void enableStartButtonInterrupt();
 
+/*verify if is time to go in sleep mood. Case YES: enter in deep sleep mode*/
+void verifyTimeToSleep();
+
 /*disabled actual interrupt of B1 and enable sleepInterrupt */
-void enableSleepInterrupt();
+void sleepUntilB1();
 
 void attachAllInterruptsForSequence();
 

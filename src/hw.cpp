@@ -1,14 +1,16 @@
 #include <Arduino.h>
-//#include <urs/sleep.h>
+#include <avr/sleep.h>
 #include <EnableInterrupt.h>
 #include "hw.h"
 #include <LiquidCrystal_I2C.h>
+#include <TimerOne.h>
+
 
 // define lcd instance (declared extern in hw.h)
 LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4);
 
-static unsigned int fadeValue = 5;
-static unsigned int currIntensity = 0;
+unsigned int fadeValue = 5;
+unsigned int currIntensity = 0;
 
 
 
@@ -48,14 +50,24 @@ void enableStartButtonInterrupt() {
 	enableInterrupt(B1, notifyStartButtonPressed, RISING);
 }
 
-/*Wake up the system from sleep mode*/
-static void wakeUp() {
-    changeStateToStart();
+// verifyTimeToSleep() removed: use millis() check in game's handlerWaitStart
+void verifyTimeToSleep() {
+    Timer1.initialize(10000000);
+    Timer1.attachInterrupt(changeStateToSleepMode);
 }
 
-void enableSleepInterrupt() {
+/*Wake up the system from sleep mode*/
+static void wakeUp() {
+}
+
+void sleepUntilB1() {
     disableInterrupt(B1);
 	enableInterrupt(B1,wakeUp,RISING);
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    sleep_enable();
+    sleep_mode();
+    sleep_disable();
+    changeStateToStart();
 }
 
 /*Notify wich button was pressed during the round in order to be inserted into the sequence*/
@@ -112,6 +124,7 @@ void startFading() {
     if (currIntensity == 0 || currIntensity == 255) {
         fadeValue = -fadeValue;
     }
+    delay(20);
 }
 
 void stopFading() {
