@@ -121,9 +121,6 @@ void pushFirstButtonToSequence() {
 	if(state == STATE_WAIT_INPUT && seqIndex < 4) {
         uint8_t buttonPressed = 1;
 		trySequence[seqIndex] = buttonPressed;
-        ledOn(buttonPressed);
-        delay(300);
-        ledOff(buttonPressed);
 		seqIndex++;
 	}
 }
@@ -133,8 +130,6 @@ void pushSecondButtonToSequence() {
         uint8_t buttonPressed = 2;
 		trySequence[seqIndex] = buttonPressed;
         ledOn(buttonPressed);
-        delay(30);
-        ledOff(buttonPressed);
 		seqIndex++;
 	}
 }
@@ -144,8 +139,6 @@ void pushThirdButtonToSequence() {
         uint8_t buttonPressed = 3;
 		trySequence[seqIndex] = buttonPressed;
         ledOn(buttonPressed);
-        delay(30);
-        ledOff(buttonPressed);
 		seqIndex++;
 	}
 }
@@ -154,8 +147,6 @@ void pushFourthButtonToSequence() {
         uint8_t buttonPressed = 4;
         trySequence[seqIndex] = buttonPressed;
         ledOn(buttonPressed);
-        delay(30);
-        ledOff(buttonPressed);
         seqIndex++;
     }
 }

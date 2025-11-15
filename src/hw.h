@@ -4,7 +4,6 @@
 #include "game.h"
 #include <LiquidCrystal_I2C.h>
 #include <avr/sleep.h>
-// TimerOne not required here; avoid including it in header to prevent side-effects
 
 //definizione dei pin corrispondenti ai bottoni
 #define B1 2
@@ -41,9 +40,6 @@ int readButton();
 
 /*enable interrupts for buttons b1 to start game*/
 void enableStartButtonInterrupt();
-
-/*verify if is time to go in sleep mood. Case YES: enter in deep sleep mode*/
-void verifyTimeToSleep();
 
 /*disabled actual interrupt of B1 and enable sleepInterrupt */
 void sleepUntilB1();
