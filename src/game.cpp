@@ -3,9 +3,10 @@
 #include <Arduino.h>
 
 #define INITIAL_TIME 10000
+#define TIME_TO_WAIT_START_BEFORE_SLEEP 10000
 
 // Definitions for globals declared as extern in game.h
-GameState state = STATE_INIT;
+volatile GameState state = STATE_INIT;
 unsigned long int T1;
 unsigned long int F;
 int score;
@@ -45,6 +46,8 @@ static void decreaseTime() {
     T1 = T1 - F;
 }
 
+
+
 void changeStateToStart() {
     if(state == STATE_WAIT_START || state == STATE_SLEEP) {
         state = STATE_START;
@@ -54,6 +57,12 @@ void changeStateToStart() {
 void changeStateToSleepMode(){
     if(state == STATE_WAIT_START) {
         state = STATE_SLEEP;
+    }
+}
+
+static void verifyTimeToSleep() {
+    if(millis() - initialTime >= TIME_TO_WAIT_START_BEFORE_SLEEP) {
+        changeStateToSleepMode();
     }
 }
 
@@ -166,7 +175,7 @@ static void handlerWaitStart() {
     startFading();
     putButton1InInitialMode();
     //da chiedere
-    //verifyTimeToSleep();
+    verifyTimeToSleep();
 }
 
 /*If the system is in sleep mode, it must wake up and go into START mode*/

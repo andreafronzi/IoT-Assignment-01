@@ -57,12 +57,15 @@ void verifyTimeToSleep() {
 }
 
 /*Wake up the system from sleep mode*/
-static void wakeUp() {
-}
+static void wakeUp() {}
 
 void sleepUntilB1() {
-    disableInterrupt(B1);
-	enableInterrupt(B1,wakeUp,RISING);
+    int irq= digitalPinToInterrupt(B1);
+    if(irq != NOT_AN_INTERRUPT){
+        return;
+    }
+    detatchInterrupt(irq);
+    attachInterrupt(irq,wakeUp,RISING);
     set_sleep_mode(SLEEP_MODE_PWR_DOWN);
     sleep_enable();
     sleep_mode();
