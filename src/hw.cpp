@@ -60,17 +60,10 @@ void verifyTimeToSleep() {
 static void wakeUp() {}
 
 void sleepUntilB1() {
-    int irq= digitalPinToInterrupt(B1);
-    if(irq != NOT_AN_INTERRUPT){
-        return;
-    }
-    detatchInterrupt(irq);
-    attachInterrupt(irq,wakeUp,RISING);
     set_sleep_mode(SLEEP_MODE_PWR_DOWN);
     sleep_enable();
     sleep_mode();
     sleep_disable();
-    changeStateToStart();
 }
 
 /*Notify wich button was pressed during the round in order to be inserted into the sequence*/

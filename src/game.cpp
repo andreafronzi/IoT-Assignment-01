@@ -1,12 +1,13 @@
 #include "game.h"
 #include "hw.h"
 #include <Arduino.h>
+#include <TimerOne.h>
 
 #define INITIAL_TIME 10000
 #define TIME_TO_WAIT_START_BEFORE_SLEEP 10000
 
 // Definitions for globals declared as extern in game.h
-volatile GameState state = STATE_INIT;
+GameState state = STATE_INIT;
 unsigned long int T1;
 unsigned long int F;
 int score;
@@ -130,6 +131,7 @@ void pushFirstButtonToSequence() {
 	if(state == STATE_WAIT_INPUT && seqIndex < 4) {
         uint8_t buttonPressed = 1;
 		trySequence[seqIndex] = buttonPressed;
+        ledOn(buttonPressed);
 		seqIndex++;
 	}
 }
@@ -190,6 +192,7 @@ static void handlerStart() {
     delay(1000);
     resetScore();
     state = STATE_PLAY_ROUND;
+    Timer1.detachInterrupt();
 }
 
 /**/
@@ -234,6 +237,7 @@ static void handlerGameOv() {
     ledOn(LR);
     delay(2000);
     ledOff(LR);
+    ledsOff();
     showLCDGameOverMessage(score);
     delay(10000);
     state = STATE_INIT;
@@ -255,17 +259,8 @@ void gameLoop() {
     switch (state) {
         case STATE_INIT: handlerInit(); break;
         case STATE_WAIT_START: handlerWaitStart(); break;
-        case STATE_SLEEP:
-            //entrare in deep_sleep
-            handlerSleep();
-            break;
-        case STATE_START:
-            
-            //if(/*sistema in deep sleep*/) {
-            //    /*lo si sveglia*/
-            //}
-            handlerStart();
-            break;
+        case STATE_SLEEP: handlerSleep(); break;
+        case STATE_START: handlerStart(); break;
         case STATE_PLAY_ROUND: handlerPlayRound(); break;
         case STATE_WAIT_INPUT: handlerWaitInput(); break;
         case STATE_PASSED_ROUND: handlerPassedRound(); break;
